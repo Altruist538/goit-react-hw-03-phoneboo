@@ -13,10 +13,22 @@ export class App extends Component {
     ],
     filter: '',
   };
+  componentDidMount() {
+    console.log('componentDidMount');
+    const SavedContacts = localStorage.getItem('contacts');
+    if (SavedContacts !== null) {
+      console.log(SavedContacts);
+      this.setState({ contacts: JSON.parse(SavedContacts) });
+    }
+  }
   changeNameFilter = newName => {
     this.setState({ filter: newName });
   };
-
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
   handleDelete = quizId => {
     this.setState(prevState => {
       return {
